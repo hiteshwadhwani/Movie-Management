@@ -14,14 +14,37 @@ export class MovieService {
   async getMovieById(id: number) {
     const movie = await this.movieRepository.findOne({
       where: { id },
+      select: {
+        id: true,
+        title: true,
+        release_data: true,
+        description: true,
+        genre: true,
+        rating: true,
+      },
     });
     return movie;
   }
 
-  async getMovies(query: { genre?: Genre }) {
+  async getMovies(query: {
+    genre?: Genre;
+    sortingKey: number;
+    sortingDirection: string;
+  }) {
     const movies = await this.movieRepository.find({
       where: {
         genre: query.genre,
+      },
+      order: {
+        [query.sortingKey]: query.sortingDirection,
+      },
+      select: {
+        id: true,
+        title: true,
+        release_data: true,
+        description: true,
+        genre: true,
+        rating: true,
       },
     });
 
@@ -29,17 +52,30 @@ export class MovieService {
   }
 
   async createMovie(movie: MovieDto) {
-    const newMovie = await this.movieRepository.save(movie);
+    const newMovie = await this.movieRepository.insert(movie);
     return newMovie;
   }
 
   async rateMovie(id: number, rating: number) {
-    const movie = await this.getMovieById(id);
+    const movie = await this.movieRepository.findOne({
+      where: { id },
+    });
 
     if (!movie) {
       throw new Error('Movie not found');
     }
-    const updatedMovie = await this.movieRepository.update({ id }, { rating });
-    return updatedMovie;
+
+    const updateMovie = await this.movieRepository.update(
+      { id },
+      {
+        rating_count: movie.rating_count + 1,
+        rating_sum: movie.rating_sum + rating,
+        rating: Math.round(
+          (movie.rating_sum + rating) / (movie.rating_count + 1),
+        ),
+      },
+    );
+
+    return updateMovie;
   }
 }

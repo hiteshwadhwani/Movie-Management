@@ -5,6 +5,8 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Max,
+  Min,
 } from 'class-validator';
 
 export enum Genre {
@@ -21,14 +23,22 @@ export enum Sort {
   desc = 'desc',
 }
 
-export class MovieQueryParams {
-  @IsOptional()
-  @IsEnum(Sort)
-  sort: Sort;
+export const validSortingKeys = ['rating'];
 
+export class RatingDTO {
+  @IsInt()
+  @Min(0)
+  @Max(5)
+  rating: number;
+}
+
+export class MovieQueryParams {
   @IsOptional()
   @IsEnum(Genre)
   genre: Genre;
+
+  @IsOptional()
+  sort: string;
 }
 
 export class MovieDto {
@@ -49,5 +59,7 @@ export class MovieDto {
 
   @IsOptional()
   @IsInt()
+  @Min(0)
+  @Max(5)
   rating: number;
 }
