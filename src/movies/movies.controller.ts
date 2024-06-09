@@ -27,7 +27,7 @@ export class MoviesController {
   }
   @Get(':id')
   public async getMovieById(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Res() response: Response,
   ) {
     const movie = await this.movieService.getMovieById(id);
