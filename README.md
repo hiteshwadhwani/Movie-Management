@@ -3,6 +3,8 @@
 
 Backend application that will serve as the foundation for our movie database
 
+https://movie-management-2dpn.onrender.com
+
 ## Tech Stack
 
 Nest.JS: A progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
@@ -14,8 +16,6 @@ PostgreSQL (Neon) : A robust and reliable relational database management system,
 TypeORM: A versatile ORM that simplifies database interactions and streamlines development with TypeScript support.
 
 Hexagonal Architecture Pattern: Structuring our application in a modular and maintainable way, promoting separation of concerns and testability.
-
-
 ## API Reference
 
 #### Get all movies
@@ -70,3 +70,17 @@ Hexagonal Architecture Pattern: Structuring our application in a modular and mai
         "genre": "comedy"
     }
 ```
+
+## Run Local
+
+```bash
+  npm run start:dev
+```
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`DATABASE_URL` (https://neon.tech/)
+
